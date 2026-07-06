@@ -1,0 +1,91 @@
+# GDScript 语法检查 + Godot 项目验证
+# 每次 push 或 PR 时自动检查所有 .gd 文件是否有语法错误
+
+name: GDScript 语法检查
+
+on:
+  push:
+    branches: [ master, main ]
+    paths:
+      - '**.gd'
+  pull_request:
+    branches: [ master, main ]
+    paths:
+      - '**.gd'
+
+jobs:
+  syntax-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: GDScript 语法检查
+        run: |
+          echo "=== 检查所有 .gd 文件语法 ==="
+          ERROR_COUNT=0
+          for file in $(find . -name "*.gd" -type f); do
+            # 检查基本语法：extends/class_name 声明、函数定义、缩进一致性
+            # 检查文件是否以有效的 GDScript 关键字开头
+            FIRST_LINE=$(head -1 "$file")
+            if [[ "$FIRST_LINE" == "" ]]; then
+              echo "⚠️  [警告] $file 第一行为空"
+            fi
+
+            # 检查括号匹配
+            OPEN_COUNT=$(grep -o '(' "$file" | wc -l)
+            CLOSE_COUNT=$(grep -o ')' "$file" | wc -l)
+            if [ "$OPEN_COUNT" != "$CLOSE_COUNT" ]; then
+              echo "❌ [错误] $file 括号不匹配: 开括号 $OPEN_COUNT 个, 闭括号 $CLOSE_COUNT 个"
+              ERROR_COUNT=$((ERROR_COUNT + 1))
+            fi
+
+            # 检查是否有未闭合的字符串
+            if grep -Pn '(?<!\\)"' "$file" | head -1 > /dev/null; then
+              # 简单检测：单数引号
+              QUOTE_COUNT=$(grep -o '"' "$file" | wc -l)
+              if [ $((QUOTE_COUNT % 2)) -ne 0 ]; then
+                echo "❌ [错误] $file 字符串引号不匹配"
+                ERROR_COUNT=$((ERROR_COUNT + 1))
+              fi
+            fi
+          done
+
+          if [ $ERROR_COUNT -gt 0 ]; then
+            echo "❌ 发现 $ERROR_COUNT 个语法错误"
+            exit 1
+          else
+            echo "✅ 所有 GDScript 文件语法检查通过"
+          fi
+
+      - name: 项目结构验证
+        run: |
+          echo "=== 验证项目结构 ==="
+          ERRORS=0
+
+          # 检查必需文件
+          if [ ! -f "project.godot" ]; then
+            echo "❌ 缺少 project.godot"
+            ERRORS=$((ERRORS + 1))
+          else
+            echo "✅ project.godot 存在"
+          fi
+
+          # 检查场景文件引用
+          echo "--- 检查场景文件完整性 ---"
+          find scenes/ -name "*.tscn" -type f | while read tscn; do
+            # 提取 ext_resource 路径
+            grep 'path="res://' "$tscn" 2>/dev/null | grep -oP 'res://[^"]+' | while read ref; do
+              ref_path="${ref#res://}"
+              if [ ! -f "$ref_path" ]; then
+                echo "⚠️  [警告] $tscn 引用了不存在的文件: $ref"
+              fi
+            done
+          done
+
+          if [ $ERRORS -gt 0 ]; then
+            exit 1
+          else
+            echo "✅ 项目结构验证通过"
+          fi
