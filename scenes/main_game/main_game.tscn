@@ -1,0 +1,551 @@
+[gd_scene format=3 uid="uid://ch38ly7cpuj3d"]
+
+[ext_resource type="PackedScene" path="res://scenes/main_game/core.tscn" id="1_core_tscn"]
+[ext_resource type="Texture2D" uid="uid://d4km2gmyhnohs" path="res://character_sources/Battleground1.png" id="2_fetp2"]
+[ext_resource type="Script" uid="uid://doi5yp265jsxw" path="res://scripts/game_manager/spawner.gd" id="2_spawner_script"]
+[ext_resource type="Script" uid="uid://4pcjdbph64ou" path="res://scripts/ui/hud.gd" id="3_hud_script"]
+[ext_resource type="Script" uid="uid://caxaanbbm1wrn" path="res://scripts/ui/deploy_panel.gd" id="4_deploy_script"]
+[ext_resource type="Script" uid="uid://dcuek3jo0rn5n" path="res://scripts/effects/dawn_effect.gd" id="5_dawn_script"]
+[ext_resource type="Script" uid="uid://dl7aea83y282u" path="res://scripts/building/deploy_slot.gd" id="6_deploy_slot_script"]
+[ext_resource type="Script" uid="uid://4yi8bcsu1pow" path="res://scripts/game_manager/game_scene_controller.gd" id="7_controller_script"]
+[ext_resource type="Script" uid="uid://de685qftwmyfa" path="res://scripts/ui/game_over_panel.gd" id="8_gameover_script"]
+[ext_resource type="Script" uid="uid://dxq5n8bd47ayr" path="res://scripts/ui/pause_menu.gd" id="9_pause_menu_script"]
+[ext_resource type="Script" uid="uid://bqleum3oboq7t" path="res://scripts/ui/victory_panel.gd" id="10_victory_script"]
+
+[sub_resource type="RectangleShape2D" id="RectShape2D_slot"]
+size = Vector2(64, 64)
+
+
+[sub_resource type="StyleBoxFlat" id="PauseBtnStyle_normal"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0.18, 0.2, 0.26, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.18)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="PauseBtnStyle_pressed"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0.12, 0.14, 0.18, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.25)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="PauseBtnStyle_hover"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0.28, 0.36, 0.5, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.35)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="MainGame" type="Node2D" unique_id=180890807]
+script = ExtResource("7_controller_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1224521612]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_fetp2")
+
+[node name="PathVisual" type="Node2D" parent="." unique_id=857357933]
+
+[node name="PathH1_G0" type="ColorRect" parent="PathVisual" unique_id=388741735]
+offset_left = 2.0
+offset_top = 290.0
+offset_right = 62.0
+offset_bottom = 350.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathH1_G1" type="ColorRect" parent="PathVisual" unique_id=289167735]
+offset_left = 66.0
+offset_top = 290.0
+offset_right = 126.0
+offset_bottom = 350.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathH1_G2" type="ColorRect" parent="PathVisual" unique_id=1359177829]
+offset_left = 130.0
+offset_top = 290.0
+offset_right = 190.0
+offset_bottom = 350.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathH1_G3" type="ColorRect" parent="PathVisual" unique_id=1578894935]
+offset_left = 194.0
+offset_top = 290.0
+offset_right = 254.0
+offset_bottom = 350.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathH1_G4" type="ColorRect" parent="PathVisual" unique_id=35120626]
+offset_left = 258.0
+offset_top = 290.0
+offset_right = 318.0
+offset_bottom = 350.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathH1_G5" type="ColorRect" parent="PathVisual" unique_id=982980690]
+offset_left = 322.0
+offset_top = 290.0
+offset_right = 382.0
+offset_bottom = 350.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathCorner1" type="ColorRect" parent="PathVisual" unique_id=774089531]
+offset_left = 386.0
+offset_top = 290.0
+offset_right = 446.0
+offset_bottom = 350.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathV1_G1" type="ColorRect" parent="PathVisual" unique_id=1295190391]
+offset_left = 386.0
+offset_top = 354.0
+offset_right = 446.0
+offset_bottom = 414.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathCorner2" type="ColorRect" parent="PathVisual" unique_id=2131594311]
+offset_left = 386.0
+offset_top = 418.0
+offset_right = 446.0
+offset_bottom = 478.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathH2_G0" type="ColorRect" parent="PathVisual" unique_id=1984905296]
+offset_left = 450.0
+offset_top = 418.0
+offset_right = 510.0
+offset_bottom = 478.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathH2_G1" type="ColorRect" parent="PathVisual" unique_id=2027946965]
+offset_left = 514.0
+offset_top = 418.0
+offset_right = 574.0
+offset_bottom = 478.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathH2_G2" type="ColorRect" parent="PathVisual" unique_id=92288108]
+offset_left = 578.0
+offset_top = 418.0
+offset_right = 638.0
+offset_bottom = 478.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathH2_G3" type="ColorRect" parent="PathVisual" unique_id=1753496020]
+offset_left = 642.0
+offset_top = 418.0
+offset_right = 702.0
+offset_bottom = 478.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathH2_G4" type="ColorRect" parent="PathVisual" unique_id=970973922]
+offset_left = 706.0
+offset_top = 418.0
+offset_right = 766.0
+offset_bottom = 478.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathCorner3" type="ColorRect" parent="PathVisual" unique_id=2036756910]
+offset_left = 770.0
+offset_top = 418.0
+offset_right = 830.0
+offset_bottom = 478.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathV2_G1" type="ColorRect" parent="PathVisual" unique_id=1788246448]
+offset_left = 770.0
+offset_top = 354.0
+offset_right = 830.0
+offset_bottom = 414.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="PathCoreCell" type="ColorRect" parent="PathVisual" unique_id=1249456619]
+offset_left = 770.0
+offset_top = 290.0
+offset_right = 830.0
+offset_bottom = 350.0
+color = Color(0.38, 0.38, 0.44, 1)
+
+[node name="Obstructions" type="Node2D" parent="." unique_id=1995564444]
+
+[node name="DeploySlots" type="Node2D" parent="." unique_id=1698174928]
+
+[node name="Slot0" type="Area2D" parent="DeploySlots" unique_id=1007878930]
+position = Vector2(32, 320)
+script = ExtResource("6_deploy_slot_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot0" unique_id=411283679]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot1" type="Area2D" parent="DeploySlots" unique_id=325128265]
+position = Vector2(96, 320)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot1" unique_id=432399427]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot2" type="Area2D" parent="DeploySlots" unique_id=1185729120]
+position = Vector2(160, 320)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot2" unique_id=1159140074]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot3" type="Area2D" parent="DeploySlots" unique_id=1929246992]
+position = Vector2(224, 320)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot3" unique_id=1961983722]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot4" type="Area2D" parent="DeploySlots" unique_id=1623916698]
+position = Vector2(288, 320)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot4" unique_id=1984840032]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot5" type="Area2D" parent="DeploySlots" unique_id=1513390371]
+position = Vector2(352, 320)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot5" unique_id=1574797155]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot6" type="Area2D" parent="DeploySlots" unique_id=1441685754]
+position = Vector2(416, 320)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot6" unique_id=920179512]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot7" type="Area2D" parent="DeploySlots" unique_id=1890376629]
+position = Vector2(416, 384)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot7" unique_id=1980402489]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot8" type="Area2D" parent="DeploySlots" unique_id=1490763195]
+position = Vector2(416, 448)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot8" unique_id=802340977]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot9" type="Area2D" parent="DeploySlots" unique_id=1246742307]
+position = Vector2(480, 448)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 9
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot9" unique_id=538900829]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot10" type="Area2D" parent="DeploySlots" unique_id=1021398489]
+position = Vector2(544, 448)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot10" unique_id=1373183460]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot11" type="Area2D" parent="DeploySlots" unique_id=1916040088]
+position = Vector2(608, 448)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 11
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot11" unique_id=1933840858]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot12" type="Area2D" parent="DeploySlots" unique_id=1445026452]
+position = Vector2(672, 448)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 12
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot12" unique_id=351724948]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot13" type="Area2D" parent="DeploySlots" unique_id=459249073]
+position = Vector2(736, 448)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 13
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot13" unique_id=1334610115]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot14" type="Area2D" parent="DeploySlots" unique_id=1150006684]
+position = Vector2(800, 448)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 14
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot14" unique_id=59250360]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot15" type="Area2D" parent="DeploySlots" unique_id=1073436973]
+position = Vector2(800, 384)
+script = ExtResource("6_deploy_slot_script")
+slot_index = 15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot15" unique_id=279215115]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot16" type="Area2D" parent="DeploySlots" unique_id=1799444778]
+position = Vector2(160, 224)
+script = ExtResource("6_deploy_slot_script")
+slot_type = "high"
+slot_index = 16
+
+[node name="Highlight" type="ColorRect" parent="DeploySlots/Slot16" unique_id=1727287397]
+visible = false
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+mouse_filter = 2
+color = Color(0.4, 0.5, 0.7, 0.35)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot16" unique_id=728232482]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot17" type="Area2D" parent="DeploySlots" unique_id=12643682]
+position = Vector2(288, 224)
+script = ExtResource("6_deploy_slot_script")
+slot_type = "high"
+slot_index = 17
+
+[node name="Highlight" type="ColorRect" parent="DeploySlots/Slot17" unique_id=1418977214]
+visible = false
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+mouse_filter = 2
+color = Color(0.4, 0.5, 0.7, 0.35)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot17" unique_id=774763459]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Slot18" type="Area2D" parent="DeploySlots" unique_id=2029244064]
+position = Vector2(608, 352)
+script = ExtResource("6_deploy_slot_script")
+slot_type = "high"
+slot_index = 18
+
+[node name="Highlight" type="ColorRect" parent="DeploySlots/Slot18" unique_id=875148383]
+visible = false
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+mouse_filter = 2
+color = Color(0.4, 0.5, 0.7, 0.35)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeploySlots/Slot18" unique_id=490714744]
+shape = SubResource("RectShape2D_slot")
+
+[node name="Core" parent="." instance=ExtResource("1_core_tscn")]
+
+[node name="EnemySpawner" type="Node" parent="." unique_id=443580417]
+script = ExtResource("2_spawner_script")
+
+[node name="Enemies" type="Node" parent="." unique_id=608287061]
+
+[node name="Characters" type="Node" parent="." unique_id=438488160]
+
+[node name="Buildings" type="Node" parent="." unique_id=1183299824]
+
+[node name="HUD" type="Control" parent="." unique_id=1092620180]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 40.0
+mouse_filter = 1
+script = ExtResource("3_hud_script")
+
+[node name="PhaseLabel" type="Label" parent="HUD" unique_id=1486329077]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 4.0
+offset_right = 180.0
+offset_bottom = 36.0
+text = "☀️ 白天"
+
+[node name="TimerLabel" type="Label" parent="HUD" unique_id=550899948]
+layout_mode = 0
+offset_left = 190.0
+offset_top = 6.0
+offset_right = 300.0
+offset_bottom = 34.0
+text = "⏱ 1:30"
+
+[node name="DayLabel" type="Label" parent="HUD" unique_id=625438837]
+layout_mode = 0
+offset_left = 310.0
+offset_top = 6.0
+offset_right = 450.0
+offset_bottom = 34.0
+text = "📅 Day 1 / 3"
+horizontal_alignment = 1
+
+[node name="GoldLabel" type="Label" parent="HUD" unique_id=1991253015]
+layout_mode = 0
+offset_left = 460.0
+offset_top = 6.0
+offset_right = 580.0
+offset_bottom = 34.0
+text = "💰 150 金"
+
+[node name="CoreHPLabel" type="Label" parent="HUD" unique_id=1239081866]
+layout_mode = 0
+offset_left = 590.0
+offset_top = 6.0
+offset_right = 740.0
+offset_bottom = 34.0
+text = "❤️ 核心 100%"
+
+[node name="SpeedBtn" type="Button" parent="HUD" unique_id=1384477942]
+layout_mode = 0
+offset_left = 1190.0
+offset_top = 4.0
+offset_right = 1278.0
+offset_bottom = 36.0
+text = "▶ 1x"
+
+[node name="PauseBtn" type="Button" parent="HUD" unique_id=966407575]
+layout_mode = 0
+offset_left = 1060.0
+offset_top = 4.0
+offset_right = 1170.0
+offset_bottom = 36.0
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("PauseBtnStyle_normal")
+theme_override_styles/pressed = SubResource("PauseBtnStyle_pressed")
+theme_override_styles/hover = SubResource("PauseBtnStyle_hover")
+text = "⏸  暂停"
+
+[node name="DeployPanel" type="CanvasLayer" parent="." unique_id=1439431372]
+layer = 50
+script = ExtResource("4_deploy_script")
+
+[node name="PanelBg" type="ColorRect" parent="DeployPanel" unique_id=863067050]
+offset_top = 640.0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 1
+color = Color(0.08, 0.08, 0.12, 0.94)
+
+[node name="PioneerBtn" type="Button" parent="DeployPanel" unique_id=2014466112]
+offset_left = 30.0
+offset_top = 650.0
+offset_right = 150.0
+offset_bottom = 712.0
+text = "先锋 (10)"
+
+[node name="DefenderBtn" type="Button" parent="DeployPanel" unique_id=1003401343]
+offset_left = 170.0
+offset_top = 650.0
+offset_right = 290.0
+offset_bottom = 712.0
+text = "重装 (28)"
+
+[node name="SniperBtn" type="Button" parent="DeployPanel" unique_id=735483288]
+offset_left = 310.0
+offset_top = 650.0
+offset_right = 430.0
+offset_bottom = 712.0
+text = "狙击 (25)"
+
+[node name="MineBtn" type="Button" parent="DeployPanel" unique_id=1098447458]
+offset_left = 450.0
+offset_top = 650.0
+offset_right = 570.0
+offset_bottom = 712.0
+text = "金矿 (50)"
+
+[node name="SelectedIndicator" type="ColorRect" parent="DeployPanel" unique_id=2053676742]
+visible = false
+offset_left = 30.0
+offset_top = 650.0
+offset_right = 150.0
+offset_bottom = 712.0
+mouse_filter = 2
+color = Color(1, 0.9, 0.2, 0.25)
+
+[node name="DawnEffect" type="CanvasLayer" parent="." unique_id=1314572208]
+layer = 100
+script = ExtResource("5_dawn_script")
+
+[node name="FlashOverlay" type="ColorRect" parent="DawnEffect" unique_id=561270364]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(1, 1, 1, 0)
+
+[node name="DawnLabel" type="Label" parent="DawnEffect" unique_id=702004026]
+visible = false
+modulate = Color(1, 0.95, 0.7, 1)
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.45
+anchor_right = 0.5
+anchor_bottom = 0.55
+offset_left = -120.0
+offset_top = -40.0
+offset_right = 120.0
+offset_bottom = 40.0
+text = "黎 明"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HealNumbers" type="Node" parent="DawnEffect" unique_id=1545688119]
+
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=936842123]
+layer = 150
+script = ExtResource("9_pause_menu_script")
+
+[node name="VictoryPanel" type="CanvasLayer" parent="." unique_id=1938657976]
+layer = 180
+script = ExtResource("10_victory_script")
+
+[node name="GameOverPanel" type="CanvasLayer" parent="." unique_id=71219386]
+layer = 200
+visible = false
+script = ExtResource("8_gameover_script")

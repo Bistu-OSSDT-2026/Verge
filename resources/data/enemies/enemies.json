@@ -1,0 +1,52 @@
+{
+  "enemies": {
+	"chaos_grunt": {
+	  "display_name": "混沌杂兵",
+	  "icon": "🟢",
+	  "hp": 100,
+	  "speed": 80.0,
+	  "threat": "低",
+	  "kill_reward": 3,
+	  "core_damage": 15,
+	  "attack_speed": 1.0,
+	  "block_capacity": 1,
+	  "special": null,
+	  "dodge": null
+	},
+	"swift_ghost": {
+	  "display_name": "迅捷鬼影",
+	  "icon": "🟡",
+	  "hp": 70,
+	  "speed": 144.0,
+	  "threat": "中",
+	  "kill_reward": 5,
+	  "core_damage": 12,
+	  "attack_speed": 0.8,
+	  "block_capacity": 1,
+	  "special": null,
+	  "dodge": {
+		"type": "闪避",
+		"chance": 0.2,
+		"description": "20%概率闪避攻击"
+	  }
+	},
+	"iron_elite": {
+	  "display_name": "黑铁精英",
+	  "icon": "⚫",
+	  "hp": 500,
+	  "speed": 56.0,
+	  "threat": "高",
+	  "kill_reward": 12,
+	  "core_damage": 35,
+	  "attack_speed": 0.33,
+	  "block_capacity": 2,
+	  "special": {
+		"name": "重击",
+		"description": "每3秒对阻挡者造成35点额外伤害",
+		"interval": 3.0,
+		"extra_damage": 35
+	  },
+	  "dodge": null
+	}
+  }
+}

@@ -1,0 +1,206 @@
+[gd_scene format=3 uid="uid://bgr2fxdkoxs7r"]
+
+[ext_resource type="Script" uid="uid://dwacb27l7valj" path="res://scripts/enemy/enemy_movement.gd" id="1_enemy_script"]
+[ext_resource type="Script" uid="uid://dy1fuybs2vlul" path="res://scripts/enemy/enemy_animation_controller.gd" id="2_enemy_anim_ctrl"]
+[ext_resource type="Texture2D" uid="uid://l3vyehfm0efo" path="res://character_sources/Blue_Slime/Attack_1.png" id="tex_atk"]
+[ext_resource type="Texture2D" uid="uid://yhaae7u6us2r" path="res://character_sources/Blue_Slime/Dead.png" id="tex_dead"]
+[ext_resource type="Texture2D" uid="uid://mkkeub4lh1ov" path="res://character_sources/Blue_Slime/Hurt.png" id="tex_hurt"]
+[ext_resource type="Texture2D" uid="uid://yhqe4ueelbcj" path="res://character_sources/Blue_Slime/walk.png" id="tex_walk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_elite"]
+radius = 20.0
+
+[sub_resource type="AtlasTexture" id="atk_0"]
+atlas = ExtResource("tex_atk")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="atk_1"]
+atlas = ExtResource("tex_atk")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="atk_2"]
+atlas = ExtResource("tex_atk")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="atk_3"]
+atlas = ExtResource("tex_atk")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="dead_0"]
+atlas = ExtResource("tex_dead")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="dead_1"]
+atlas = ExtResource("tex_dead")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="dead_2"]
+atlas = ExtResource("tex_dead")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="hurt_0"]
+atlas = ExtResource("tex_hurt")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="hurt_1"]
+atlas = ExtResource("tex_hurt")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="hurt_2"]
+atlas = ExtResource("tex_hurt")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="hurt_3"]
+atlas = ExtResource("tex_hurt")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="hurt_4"]
+atlas = ExtResource("tex_hurt")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="hurt_5"]
+atlas = ExtResource("tex_hurt")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="walk_0"]
+atlas = ExtResource("tex_walk")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="walk_1"]
+atlas = ExtResource("tex_walk")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="walk_2"]
+atlas = ExtResource("tex_walk")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="walk_3"]
+atlas = ExtResource("tex_walk")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="walk_4"]
+atlas = ExtResource("tex_walk")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="walk_5"]
+atlas = ExtResource("tex_walk")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="walk_6"]
+atlas = ExtResource("tex_walk")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="walk_7"]
+atlas = ExtResource("tex_walk")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="EliteSpriteFrames"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("atk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("atk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("atk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("atk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("atk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("atk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("atk_0")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("dead_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("dead_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("dead_2")
+}],
+"loop": 0,
+"name": &"death",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("hurt_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("hurt_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("hurt_5")
+}],
+"loop": 0,
+"name": &"hit",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("walk_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("walk_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("walk_7")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 8.0
+}]
+
+[node name="Enemy_Elite" type="CharacterBody2D"]
+script = ExtResource("1_enemy_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_elite")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(2, -58)
+scale = Vector2(1.3, 1.4)
+modulate = Color(0.45, 0.4, 0.5, 1.0)
+sprite_frames = SubResource("EliteSpriteFrames")
+animation = &"idle"
+
+[node name="EnemyAnimationController" type="Node" parent="."]
+script = ExtResource("2_enemy_anim_ctrl")

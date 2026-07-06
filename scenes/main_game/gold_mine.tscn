@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bmn0fxdkoxs7r"]
+
+[ext_resource type="Script" uid="uid://banfm4osm5qyl" path="res://scripts/building/gold_mine.gd" id="1_mine_script"]
+[ext_resource type="Texture2D" uid="uid://8wnv1pnx455m" path="res://character_sources/200602SRBXCA4tmG8iEJh8.png" id="2_4pxvu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8n31s"]
+atlas = ExtResource("2_4pxvu")
+region = Rect2(0, 0, 1080, 946)
+
+[sub_resource type="SpriteFrames" id="MineSpriteFrames"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8n31s")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 1.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mine_hitbox"]
+radius = 32.0
+
+[node name="GoldMine" type="Node2D" unique_id=1398287063]
+script = ExtResource("1_mine_script")
+
+[node name="Visual" type="AnimatedSprite2D" parent="." unique_id=590343050]
+position = Vector2(9.536743e-07, -3.5762787e-07)
+scale = Vector2(0.0639535, 0.0639535)
+sprite_frames = SubResource("MineSpriteFrames")
+animation = &"idle"
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1692455432]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1822715673]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_mine_hitbox")

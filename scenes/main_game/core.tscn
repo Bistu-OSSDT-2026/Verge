@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bcr0fxdkoxs7r"]
+
+[ext_resource type="Script" uid="uid://c2utdf7670q1y" path="res://scripts/core/core_node.gd" id="1_core_script"]
+[ext_resource type="Texture2D" uid="uid://dy4vpj1jccj1i" path="res://character_sources/5abb8617a1f192f3f6334b8a8ff6d1d7-no-bg (2).png" id="2_1w7hp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d06jn"]
+atlas = ExtResource("2_1w7hp")
+region = Rect2(0, 0, 1080, 1067)
+
+[sub_resource type="SpriteFrames" id="CoreSpriteFrames"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d06jn")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 1.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_core_hitbox"]
+radius = 32.0
+
+[node name="Core" type="Node2D" unique_id=1492796661]
+position = Vector2(800, 320)
+script = ExtResource("1_core_script")
+
+[node name="Visual" type="AnimatedSprite2D" parent="." unique_id=1481990987]
+position = Vector2(0, -67)
+scale = Vector2(0.13987817, 0.13987817)
+sprite_frames = SubResource("CoreSpriteFrames")
+animation = &"idle"
+
+[node name="CoreHitbox" type="Area2D" parent="." unique_id=237002344]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CoreHitbox" unique_id=1442049432]
+shape = SubResource("CircleShape2D_core_hitbox")

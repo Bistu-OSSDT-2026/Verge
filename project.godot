@@ -1,0 +1,70 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Verge"
+config/description="A time-loop tower defense game."
+config/version="0.1.0"
+run/main_scene="res://scenes/menu/splash_screen.tscn"
+config/features=PackedStringArray("4.7")
+config/icon="res://icon.svg"
+
+[autoload]
+
+Constants="*res://scripts/core/constants.gd"
+SignalBus="*res://scripts/core/signal_bus.gd"
+GameManager="*res://scripts/game_manager/game_manager.gd"
+TimeCycle="*res://scripts/time_cycle/time_cycle.gd"
+Economy="*res://scripts/economy/economy.gd"
+Resolution="*res://scripts/core/resolution_manager.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
+[input]
+
+ui_place={
+"deadzone": 0.5,
+"events": [{
+"keycode": 65,
+"pressed": false,
+"type": "Key"
+}]
+}
+ui_upgrade={
+"deadzone": 0.5,
+"events": [{
+"keycode": 85,
+"pressed": false,
+"type": "Key"
+}]
+}
+ui_recall={
+"deadzone": 0.5,
+"events": [{
+"keycode": 82,
+"pressed": false,
+"type": "Key"
+}]
+}
+
+[internationalization]
+
+locale/translations=[]
+locale/default_locale="zh_CN"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"

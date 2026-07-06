@@ -1,0 +1,47 @@
+{
+  "characters": {
+	"pioneer": {
+	  "display_name": "先锋",
+	  "icon": "⚔️",
+	  "element": "地",
+	  "cost": 20,
+	  "hp": 180,
+	  "attack": 24,
+	  "block": 2,
+	  "range_type": "近战",
+	  "range_cells": 1,
+	  "attack_speed": 1.0,
+	  "deployment_cost": 20,
+	  "special": null,
+	  "_design_note": "策划书原本设计'首次部署后10秒内每秒回复2金币'，2026-07-01 讨论后删除：与金矿功能冲突，回归廉价挡怪定位。2026-07-02 调价：费用10→20，HP150→180，攻击20→24"
+	},
+	"defender": {
+	  "display_name": "重装",
+	  "icon": "🛡️",
+	  "element": "地",
+	  "cost": 40,
+	  "hp": 450,
+	  "attack": 10,
+	  "block": 4,
+	  "range_type": "近战",
+	  "range_cells": 1,
+	  "attack_speed": 1.5,
+	  "special": null,
+	  "_design_note": "原职业 '近卫(Guard)'，2026-07-01 重新定位为'重装(Defender)'：纯肉盾型，挡4 + HP450，攻击仅10几乎只是刮痧。设计意图：和先锋(快攻)+狙击(远程)形成 '近战快攻 vs 近战肉盾 vs 远程' 三足鼎立。费用 28→40（2026-07-02 调高，HP400→450，攻击8→10）"
+	},
+	"sniper": {
+	  "display_name": "狙击",
+	  "icon": "🎯",
+	  "element": "光",
+	  "cost": 45,
+	  "hp": 140,
+	  "attack": 52,
+	  "block": 0,
+	  "range_type": "远程",
+	  "range_cells": 6,
+	  "attack_speed": 1.5,
+	  "special": null,
+	  "_design_note": "费用 25→45（2026-07-02 调高，HP120→140，攻击45→52）"
+	}
+  }
+}

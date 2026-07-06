@@ -1,0 +1,236 @@
+[gd_scene format=3 uid="uid://diajymt3o7cys"]
+
+[ext_resource type="Script" uid="uid://dtpi42dvd1vjs" path="res://scripts/character/character_base.gd" id="1_char_script"]
+[ext_resource type="Script" uid="uid://b3iry55fwdau2" path="res://scripts/character/attack_animation_controller.gd" id="2_attack_anim"]
+[ext_resource type="Texture2D" uid="uid://bd26uvk14ahgh" path="res://character_sources/rika_3f8e6078 (1).png" id="3_texture"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sniper"]
+radius = 24.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3pr2f"]
+atlas = ExtResource("3_texture")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1qygl"]
+atlas = ExtResource("3_texture")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ttwmr"]
+atlas = ExtResource("3_texture")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4aj5j"]
+atlas = ExtResource("3_texture")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8bssx"]
+atlas = ExtResource("3_texture")
+region = Rect2(384, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xapwc"]
+atlas = ExtResource("3_texture")
+region = Rect2(256, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7b2t"]
+atlas = ExtResource("3_texture")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xji1m"]
+atlas = ExtResource("3_texture")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rrwgm"]
+atlas = ExtResource("3_texture")
+region = Rect2(384, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o2vkh"]
+atlas = ExtResource("3_texture")
+region = Rect2(256, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mxi81"]
+atlas = ExtResource("3_texture")
+region = Rect2(128, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dw8jm"]
+atlas = ExtResource("3_texture")
+region = Rect2(0, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0b603"]
+atlas = ExtResource("3_texture")
+region = Rect2(0, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4gxbk"]
+atlas = ExtResource("3_texture")
+region = Rect2(128, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v3dju"]
+atlas = ExtResource("3_texture")
+region = Rect2(256, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5xn2"]
+atlas = ExtResource("3_texture")
+region = Rect2(384, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vdn2d"]
+atlas = ExtResource("3_texture")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f08sf"]
+atlas = ExtResource("3_texture")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fcyw6"]
+atlas = ExtResource("3_texture")
+region = Rect2(256, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcj2u"]
+atlas = ExtResource("3_texture")
+region = Rect2(384, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j1ghr"]
+atlas = ExtResource("3_texture")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_72dqs"]
+atlas = ExtResource("3_texture")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f6r34"]
+atlas = ExtResource("3_texture")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oy0th"]
+atlas = ExtResource("3_texture")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ihyci"]
+atlas = ExtResource("3_texture")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sniper"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3pr2f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1qygl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ttwmr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4aj5j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8bssx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xapwc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7b2t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xji1m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rrwgm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o2vkh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mxi81")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dw8jm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0b603")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4gxbk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v3dju")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r5xn2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vdn2d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f08sf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fcyw6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lcj2u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j1ghr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_72dqs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f6r34")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oy0th")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ihyci")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Sniper" type="CharacterBody2D" unique_id=1527580454]
+script = ExtResource("1_char_script")
+char_id = "sniper"
+char_name = "狙击"
+deploy_cost = 45
+max_hp = 140.0
+attack_damage = 52.0
+block_count = 0
+range_cells = 6.0
+attack_cooldown = 1.5
+deploy_type = "high"
+is_ranged = true
+
+[node name="HPBarBg" type="ColorRect" parent="." unique_id=854772950]
+offset_left = -20.0
+offset_top = 26.0
+offset_right = 20.0
+offset_bottom = 32.0
+color = Color(0.2, 0.2, 0.2, 0.8)
+
+[node name="HPBarFill" type="ColorRect" parent="HPBarBg" unique_id=1916449484]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 6.0
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="AttackArea" type="Area2D" parent="." unique_id=1345319757]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=1028534954]
+shape = SubResource("CircleShape2D_sniper")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1179239482]
+position = Vector2(-1.9073486e-06, -1.9073486e-06)
+scale = Vector2(0.65625, 0.65625)
+sprite_frames = SubResource("SpriteFrames_sniper")
+animation = &"default"
+
+[node name="AttackAnimationController" type="Node" parent="." unique_id=2130676828]
+script = ExtResource("2_attack_anim")

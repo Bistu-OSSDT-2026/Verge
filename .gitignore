@@ -1,0 +1,15 @@
+# Godot 自动生成
+.godot/
+*.uid
+*.import
+
+# 策划书 .docx（过大，只保留 .md）
+策划书/*.docx
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 系统文件
+Thumbs.db
+.DS_Store

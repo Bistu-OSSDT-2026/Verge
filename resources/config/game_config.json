@@ -1,0 +1,34 @@
+{
+  "time_cycle": {
+    "day_duration": 90,
+    "dusk_duration": 30,
+    "night_duration": 90,
+    "boss_day_shortened_day": 60,
+    "boss_day_shortened_dusk": 15,
+    "assault_wave_interval_seconds": 60,
+    "assault_wave_buff": {
+      "speed_increase": 0.3
+    }
+  },
+  "dawn": {
+    "revive_hp_percent": 0.3,
+    "bonus_gold_when_core_above": 0.7,
+    "bonus_gold_amount": 50
+  },
+  "economy": {
+    "starting_gold": 150,
+    "gold_mine": {
+      "build_cost": 50,
+      "gold_per_tick": 15,
+      "tick_interval": 3.0
+    }
+  },
+  "core": {
+    "max_hp": 100,
+    "hp_type": "percent"
+  },
+  "display": {
+    "viewport_width": 1280,
+    "viewport_height": 720
+  }
+}

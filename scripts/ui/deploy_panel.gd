@@ -1,0 +1,339 @@
+## deploy_panel.gd
+## 底部部署面板 — 角色部署 + 金矿建造（两套独立选中状态）
+## extends CanvasLayer
+
+extends CanvasLayer
+
+class CharButtonData:
+	var id: String
+	var name_str: String
+	var cost: int
+	var deploy_type: String
+	var range_cells: float
+	var color: Color
+	var button: Button
+
+# 角色选中状态
+var selected_char_id: String = ""
+var char_buttons: Array = []
+
+# 金矿选中状态（独立于角色）
+var mine_selected: bool = false
+
+# 攻击范围预览圈（最初版：单一柔和 Polygon2D 圆）
+var range_preview: Polygon2D = null  # 单一柔和圆环
+var hovered_slot_pos: Vector2 = Vector2.ZERO  # 当前鼠标悬浮的部署位位置
+
+@onready var pioneer_btn: Button = $PioneerBtn
+@onready var defender_btn: Button = $DefenderBtn
+@onready var sniper_btn: Button = $SniperBtn
+@onready var mine_btn: Button = $MineBtn
+@onready var selected_indicator: Control = $SelectedIndicator
+
+const SCENE_PIONEER := "res://scenes/main_game/character_pioneer.tscn"
+const SCENE_DEFENDER := "res://scenes/main_game/character_defender.tscn"
+const SCENE_SNIPER := "res://scenes/main_game/character_sniper.tscn"
+const MINE_COST := 50
+const MAX_MINES := 2  # 策划书 3.5: 金矿上限 2 个
+
+
+func _ready() -> void:
+	_setup_button(pioneer_btn, Constants.CHAR_PIONEER, "先锋", 20, "ground", 1.0, Color(0.3, 0.6, 0.95, 0.3))
+	_setup_button(defender_btn, Constants.CHAR_DEFENDER, "重装", 40, "ground", 1.0, Color(0.9, 0.3, 0.3, 0.25))
+	_setup_button(sniper_btn, Constants.CHAR_SNIPER, "狙击", 45, "high", 6.0, Color(1.0, 0.7, 0.2, 0.22))
+
+	if pioneer_btn:
+		pioneer_btn.pressed.connect(_on_pioneer_pressed)
+	if defender_btn:
+		defender_btn.pressed.connect(_on_defender_pressed)
+	if sniper_btn:
+		sniper_btn.pressed.connect(_on_sniper_pressed)
+	if mine_btn:
+		mine_btn.pressed.connect(_on_mine_pressed)
+	if selected_indicator:
+		selected_indicator.visible = false
+
+	# 监听部署位 hover 事件，更新范围预览位置
+	# (SignalBus 由 deploy_slot 在 _ready 中 connect)
+
+	SignalBus.gold_changed.connect(_refresh_buttons)
+	SignalBus.cycle_phase_changed.connect(_on_phase_changed)
+	_refresh_buttons()
+
+
+func _process(_delta: float) -> void:
+	_update_selected_indicator()
+	_update_range_preview()
+	# 每帧检查按钮状态（确保金币变化后立即更新，避免信号遗漏）
+	_check_buttons_state()
+
+
+## 每帧检查按钮是否需要刷新（只在金币或选中状态变化时才真正刷新）
+var _last_gold: int = -1
+var _last_selected: String = ""
+var _last_mine_sel: bool = false
+var _last_mine_count: int = -1
+func _check_buttons_state() -> void:
+	var g := Economy.gold
+	var mc := Economy.mines.size()
+	if g != _last_gold or selected_char_id != _last_selected or mine_selected != _last_mine_sel or mc != _last_mine_count:
+		_last_gold = g
+		_last_selected = selected_char_id
+		_last_mine_sel = mine_selected
+		_last_mine_count = mc
+		_refresh_buttons()
+
+
+func _setup_button(btn: Button, id: String, name_str: String, cost: int, deploy_type: String, range_cells: float, range_color: Color) -> void:
+	if not btn:
+		return
+	btn.mouse_filter = Control.MOUSE_FILTER_STOP
+	btn.focus_mode = Control.FOCUS_NONE  # 防止焦点干扰
+	var data := CharButtonData.new()
+	data.id = id
+	data.name_str = name_str
+	data.cost = cost
+	data.deploy_type = deploy_type
+	data.range_cells = range_cells
+	data.color = range_color
+	data.button = btn
+	char_buttons.append(data)
+
+
+# ==================== 角色选中 ====================
+func _on_pioneer_pressed() -> void:
+	_select_char(Constants.CHAR_PIONEER)
+
+func _on_defender_pressed() -> void:
+	_select_char(Constants.CHAR_DEFENDER)
+
+func _on_sniper_pressed() -> void:
+	_select_char(Constants.CHAR_SNIPER)
+
+func _select_char(char_id: String) -> void:
+	print("[DeployPanel] _select_char 调用: 传入=%s 当前=%s" % [char_id, selected_char_id])
+	mine_selected = false
+	if selected_char_id == char_id:
+		selected_char_id = ""
+		_hide_range_preview()
+		print("[DeployPanel] → 取消选中")
+	else:
+		selected_char_id = char_id
+		_show_range_preview_for(char_id)
+		print("[DeployPanel] → 切换选中 → %s" % char_id)
+
+
+# ==================== 攻击范围预览（最初版：单一柔和 Polygon2D 圆） ====================
+## 选中角色时创建/显示范围预览
+func _show_range_preview_for(char_id: String) -> void:
+	var data: CharButtonData = null
+	for d in char_buttons:
+		if d.id == char_id:
+			data = d
+			break
+	if not data:
+		return
+
+	# 创建一次，后续重用
+	if not range_preview:
+		range_preview = Polygon2D.new()
+		# 用 64 段圆逼近
+		var segments: int = 64
+		var points: PackedVector2Array = PackedVector2Array()
+		for i in range(segments + 1):
+			var angle: float = TAU * float(i) / float(segments)
+			points.append(Vector2(cos(angle), sin(angle)))
+		range_preview.polygon = points
+		range_preview.z_index = 5
+		# 放在 DeployPanel 自己的 CanvasLayer 中
+		add_child(range_preview)
+
+	# 按选中角色缩放/着色
+	var radius_px: float = data.range_cells * Constants.GRID_CELL_SIZE
+	range_preview.scale = Vector2(radius_px, radius_px)
+	range_preview.color = data.color
+	range_preview.visible = true
+	# 重要：reparent 到 MainGame（世界坐标系）这样 position 用世界坐标
+	if range_preview.get_parent() != get_tree().current_scene:
+		var old_parent = range_preview.get_parent()
+		if old_parent:
+			old_parent.remove_child(range_preview)
+		get_tree().current_scene.add_child(range_preview)
+		range_preview.z_index = 5
+
+
+## 取消选中/部署完成后 → 隐藏范围
+func _hide_range_preview() -> void:
+	if range_preview:
+		range_preview.visible = false
+
+
+## 每帧更新范围圈位置（跟随鼠标悬浮的部署位）
+func _update_range_preview() -> void:
+	if not range_preview or not range_preview.visible:
+		return
+
+	# 2026-07-01: 防御性 — 未选中任何角色时强制隐藏范围圈
+	if selected_char_id == "" and not mine_selected:
+		range_preview.visible = false
+		return
+
+	# 优先：显示在最后一个被 hover 的部署位上
+	if hovered_slot_pos != Vector2.ZERO:
+		range_preview.position = hovered_slot_pos
+		return
+
+	# 退而求其次：显示在鼠标全局坐标
+	# 注意：CanvasLayer 没有 get_global_mouse_position()，但 Viewport 有
+	var vp := get_viewport()
+	if vp:
+		range_preview.position = vp.get_mouse_position()
+
+
+## 部署位 hover 时由 deploy_slot 调用，更新范围圈位置
+func on_slot_hover(slot: Node) -> void:
+	if slot and slot is Node2D:
+		hovered_slot_pos = (slot as Node2D).global_position
+
+
+## 部署位取消 hover
+func on_slot_unhover() -> void:
+	hovered_slot_pos = Vector2.ZERO
+
+
+# ==================== 金矿选中（独立） ====================
+func _on_mine_pressed() -> void:
+	# 选金矿时自动取消角色选中 + 隐藏残留的范围圈
+	selected_char_id = ""
+	_hide_range_preview()
+	mine_selected = not mine_selected
+
+
+# ==================== 部署位点击 ====================
+func on_slot_clicked(slot: Node) -> void:
+	# 金矿模式（2026-07-01: 金矿可放在所有 ground/high 通用格上）
+	if mine_selected:
+		if slot.has_method("_try_place_mine"):
+			slot.call("_try_place_mine")
+		# 无论成败都取消选中（避免选中状态卡住让玩家迷惑）
+		mine_selected = false
+		_hide_range_preview()
+		return
+
+	# 角色模式
+	if selected_char_id == "":
+		return
+
+	var data: CharButtonData = null
+	for d in char_buttons:
+		if d.id == selected_char_id:
+			data = d
+			break
+	if not data:
+		return
+
+	var actual_cost: int = data.cost
+
+	if slot.has_method("try_deploy"):
+		var scene_path := _get_scene_for_char(selected_char_id)
+		if scene_path:
+			var scene := load(scene_path)
+			var success: bool = slot.try_deploy(scene, actual_cost, data.deploy_type)
+			if success:
+				# 2026-07-01: 部署成功后关闭范围圈 + 取消选中
+				selected_char_id = ""
+				_hide_range_preview()
+
+
+func _get_scene_for_char(char_id: String) -> String:
+	match char_id:
+		Constants.CHAR_PIONEER:
+			return SCENE_PIONEER
+		Constants.CHAR_DEFENDER:
+			return SCENE_DEFENDER
+		Constants.CHAR_SNIPER:
+			return SCENE_SNIPER
+	return ""
+
+
+# ==================== 按钮刷新 ====================
+func _refresh_buttons(_gold: int = -1) -> void:
+	var current_gold: int = _gold if _gold >= 0 else Economy.gold
+	print("[DeployPanel] _refresh_buttons: gold=%d, selected=%s, mine_sel=%s" % [current_gold, selected_char_id, mine_selected])
+
+	for data in char_buttons:
+		var btn: Button = data.button
+		if not btn:
+			continue
+		var cost: int = data.cost
+		# 已选中的角色按钮永远可点击（为了能取消选中）
+		if data.id == selected_char_id:
+			btn.disabled = false
+		else:
+			btn.disabled = (current_gold < cost)
+		btn.text = "%s (%d)" % [data.name_str, data.cost]
+
+	# 金矿按钮：钱不够 / 金矿已满 → 禁用
+	if mine_btn:
+		if mine_selected:
+			mine_btn.disabled = false
+		else:
+			var can_afford: bool = Economy.can_afford(MINE_COST)
+			var mines_full: bool = Economy.mines.size() >= MAX_MINES
+			mine_btn.disabled = (not can_afford) or mines_full
+			print("[DeployPanel] 金矿按钮: can_afford=%s, mines=%d/%d, disabled=%s" % [can_afford, Economy.mines.size(), MAX_MINES, mine_btn.disabled])
+
+
+func _on_phase_changed(_phase_name: String) -> void:
+	_refresh_buttons()
+
+
+# ==================== 高亮查询 ====================
+func can_deploy_on_slot(slot_type: String) -> bool:
+	# 2026-07-01: 取消地面角色/金矿的放置位置限制 — 玩家想放哪格就放哪格
+	# 唯一限制：只能放在敌人路径上的格（slot_type == "ground"）
+
+	# 金矿模式：可放任意 ground 部署位
+	if mine_selected:
+		return slot_type == "ground" and Economy.can_afford(MINE_COST)
+
+	# 角色模式
+	if selected_char_id == "":
+		return false
+
+	for data in char_buttons:
+		if data.id == selected_char_id:
+			# 狙击 (high)：只放 high 部署位
+			# 先锋/重装 (ground)：可放任意 ground 部署位（已是无类型限制）
+			if data.deploy_type == "high" and slot_type != "high":
+				return false
+			if data.deploy_type == "ground" and slot_type != "ground":
+				return false
+			return Economy.can_afford(data.cost)
+	return false
+
+
+# ==================== 选中指示器 ====================
+func _update_selected_indicator() -> void:
+	if not selected_indicator:
+		return
+
+	# 优先显示角色选中
+	if selected_char_id != "":
+		selected_indicator.visible = true
+		for data in char_buttons:
+			if data.id == selected_char_id and data.button:
+				selected_indicator.offset_left = data.button.offset_left
+				selected_indicator.offset_top = data.button.offset_top
+				selected_indicator.offset_right = data.button.offset_right
+				selected_indicator.offset_bottom = data.button.offset_bottom
+				return
+	# 金矿选中
+	elif mine_selected and mine_btn:
+		selected_indicator.visible = true
+		selected_indicator.offset_left = mine_btn.offset_left
+		selected_indicator.offset_top = mine_btn.offset_top
+		selected_indicator.offset_right = mine_btn.offset_right
+		selected_indicator.offset_bottom = mine_btn.offset_bottom
+	else:
+		selected_indicator.visible = false

@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://b273u8fu1euqs"]
+
+[ext_resource type="Script" uid="uid://dnadpdruav1cl" path="res://scripts/ui/menu/chapter_select.gd" id="1_chapter_script"]
+[ext_resource type="Texture2D" uid="uid://xsvhq4dqaiwt" path="res://character_sources/PNG/Battleground2/Pale/Battleground2.png" id="2_wwcgn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.06, 0.06, 0.1, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.86, 0.66, 0.26, 0.55)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="ChapterSelect" type="Control" unique_id=1205589227]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_chapter_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=2085664916]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+texture = ExtResource("2_wwcgn")
+
+[node name="Panel" type="Panel" parent="." unique_id=672242543]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 220.0
+offset_top = 70.0
+offset_right = -220.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="TitleLabel" type="Label" parent="Panel" unique_id=613910888]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 18.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.86, 0.46, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.08, 0.03, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 38
+text = "选择章节"
+horizontal_alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="Panel" unique_id=668392742]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 86.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="List" type="VBoxContainer" parent="Panel/Scroll" unique_id=2147123013]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="BackButton" type="Button" parent="." unique_id=1832050043]
+layout_mode = 1
+offset_left = 28.0
+offset_top = 28.0
+offset_right = 138.0
+offset_bottom = 74.0
+theme_override_colors/font_color = Color(0.92, 0.9, 0.85, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.86, 0.46, 1)
+theme_override_colors/font_hover_color = Color(1, 0.86, 0.46, 1)
+theme_override_font_sizes/font_size = 20
+	text = "← 返回"
