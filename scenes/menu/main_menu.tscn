@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://drbhwm885wo85"]
 
-[ext_resource type="Script" uid="uid://cyia45y3jp34" path="res://scripts/ui/menu/main_menu.gd" id="1_menu_script"]
+[ext_resource type="Script" path="res://scripts/ui/menu/main_menu.gd" id="1_menu_script"]
 [ext_resource type="Texture2D" uid="uid://bkvfx14sef41e" path="res://character_sources/PNG/Battleground3/Bright/Battleground3.png" id="2_3rkf3"]
 
 [node name="MainMenu" type="Control" unique_id=1165661743]
