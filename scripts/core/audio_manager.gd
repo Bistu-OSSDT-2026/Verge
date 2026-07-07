@@ -16,12 +16,14 @@ const BGM_TRACKS := {
 # ============ SFX 轨道映射 ============
 const SFX_TRACKS := {
 	"pioneer_attack": "res://resources/audio/sfx/pioneer_attack.wav",
-	"defender_attack": "res://resources/audio/sfx/defender_attack.wav",
+	"defender_attack": "res://resources/audio/sfx/defender_attack.mp3",
 	"sniper_attack": "res://resources/audio/sfx/sniper_attack.ogg",
 	"button_click": "res://resources/audio/sfx/button_click.mp3",
 	"button_hover": "res://resources/audio/sfx/button_hover.mp3",
 	"upgrade": "res://resources/audio/sfx/upgrade.mp3",
 	"mine": "res://resources/audio/sfx/mine.mp3",
+	"victory": "res://resources/audio/sfx/victory.mp3",
+	"defeat": "res://resources/audio/sfx/defeat.mp3",
 }
 
 # ============ 音量 ============
