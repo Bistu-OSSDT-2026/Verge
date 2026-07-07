@@ -74,11 +74,11 @@ func spawn_hit_effect(pos: Vector2) -> void:
 	# 火花粒子（8 个方向飞溅的像素方块）
 	var dirs := [Vector2.RIGHT, Vector2.LEFT, Vector2.UP, Vector2.DOWN,
 		Vector2(1, 1), Vector2(-1, 1), Vector2(1, -1), Vector2(-1, -1)]
-	for i in dirs.size():
+	for i in range(dirs.size()):
 		var spark := _make_pixel(COL_HIT_SPARK if i % 2 == 0 else COL_HIT_SPARK_2)
 		spark.position = pos
 		layer.add_child(spark)
-		var dir := dirs[i].normalized()
+		var dir: Vector2 = dirs[i].normalized()
 		var dist := randf_range(10.0, 20.0)
 		var tw := spark.create_tween()
 		tw.tween_property(spark, "position", pos + dir * dist, 0.2).set_trans(Tween.TRANS_QUAD)
