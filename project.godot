@@ -28,6 +28,7 @@ Economy="*res://scripts/economy/economy.gd"
 Resolution="*res://scripts/core/resolution_manager.gd"
 StoryManager="*res://scripts/core/story_manager.gd"
 TutorialManager="*res://scripts/core/tutorial_manager.gd"
+BlessingManager="*res://scripts/core/blessing_manager.gd"
 
 [display]
 

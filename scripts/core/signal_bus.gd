@@ -41,6 +41,10 @@ signal enemy_spawned(enemy_type: String, spawn_point: String)
 signal enemy_reached_core(enemy_type: String)
 @warning_ignore("unused_signal")
 signal enemy_died(enemy_type: String, gold_reward: int)
+@warning_ignore("unused_signal")
+signal boss_spawned(boss_type: String)
+@warning_ignore("unused_signal")
+signal boss_defeated()
 
 # ---------- 核心 ----------
 @warning_ignore("unused_signal")
