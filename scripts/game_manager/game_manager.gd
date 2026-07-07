@@ -100,7 +100,7 @@ func next_day() -> void:
 	SignalBus.day_completed.emit(current_day)
 
 func _trigger_chapter_opening(level_name: String) -> void:
-	var chapter_id: String = level_chapter_map.get(level_name, "")
+	var chapter_id := level_chapter_map.get(level_name, "")
 	print("[GameManager] 查找章节映射: level=%s, chapter=%s" % [level_name, chapter_id])
 	if chapter_id == "":
 		print("[GameManager] ❌ 未找到章节映射: ", level_name)
