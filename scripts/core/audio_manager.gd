@@ -68,7 +68,7 @@ func play_bgm(track_name: String, fade: float = 0.8) -> void:
 	if not BGM_TRACKS.has(track_name):
 		push_warning("[AudioManager] 未知 BGM: %s" % track_name)
 		return
-	var stream := _load(BGM_TRACKS[track_name])
+	var stream := _load(BGM_TRACKS[track_name], true)
 	if not stream:
 		return
 	_current_bgm_name = track_name
@@ -105,7 +105,7 @@ func stop_bgm(fade: float = 0.5) -> void:
 func play_sfx(track_name: String, vol_mult: float = 1.0) -> void:
 	if not SFX_TRACKS.has(track_name):
 		return
-	var stream := _load(SFX_TRACKS[track_name])
+	var stream := _load(SFX_TRACKS[track_name], false)
 	if not stream:
 		return
 	for p in _sfx_pool:
@@ -137,17 +137,19 @@ func set_sfx_volume(v: float) -> void:
 
 # ============ 辅助 ============
 
-func _load(path: String) -> AudioStream:
-	if _cache.has(path):
-		return _cache[path]
+func _load(path: String, loop: bool = false) -> AudioStream:
+	var cache_key := path + ("|loop" if loop else "|noloop")
+	if _cache.has(cache_key):
+		return _cache[cache_key]
 	if not FileAccess.file_exists(path):
 		push_warning("[AudioManager] 文件不存在: %s" % path)
 		return null
 	var s := load(path) as AudioStream
 	if s:
-		# BGM 自动设置循环播放（白天/夜晚等长时段音乐不中断）
-		_set_loop(s)
-		_cache[path] = s
+		# 仅 BGM 设置循环播放（SFX 不循环，避免按键音效无限循环）
+		if loop:
+			_set_loop(s)
+		_cache[cache_key] = s
 	return s
 
 
