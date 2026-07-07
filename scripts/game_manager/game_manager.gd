@@ -51,6 +51,17 @@ func _trigger_test_game_over() -> void:
 	trigger_game_over()
 	SignalBus.game_over.emit()
 
+var level_chapter_map: Dictionary = {
+	"main_game": "chapter_0",
+	"level_1": "chapter_1",
+	"level_2": "chapter_2",
+	"level_3": "chapter_3",
+	"level_4": "chapter_4",
+	"level_5": "chapter_5",
+	"level_6": "chapter_6",
+	"level_7": "chapter_7"
+}
+
 func start_level(level_name: String) -> void:
 	current_level = level_name
 	current_day = 1
@@ -63,6 +74,8 @@ func start_level(level_name: String) -> void:
 	total_deployed = 0
 	total_kills = 0
 	print("[GameManager] 开始关卡: ", level_name)
+	
+	_trigger_chapter_opening(level_name)
 
 func set_paused(paused: bool) -> void:
 	is_paused = paused
@@ -86,3 +99,11 @@ func next_day() -> void:
 	print("[GameManager] 进入第 %d 天" % current_day)
 	# 发送天数变化信号（HUD 等模块监听）
 	SignalBus.day_completed.emit(current_day)
+
+func _trigger_chapter_opening(level_name: String) -> void:
+	var chapter_id := level_chapter_map.get(level_name, "")
+	if chapter_id == "":
+		return
+	if StoryManager and StoryManager.has_method("trigger_chapter_opening"):
+		StoryManager.trigger_chapter_opening(chapter_id)
+		print("[GameManager] 触发章节开场剧情: ", chapter_id)

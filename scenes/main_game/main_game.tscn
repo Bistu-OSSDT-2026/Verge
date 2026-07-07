@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://de685qftwmyfa" path="res://scripts/ui/game_over_panel.gd" id="8_gameover_script"]
 [ext_resource type="Script" uid="uid://dxq5n8bd47ayr" path="res://scripts/ui/pause_menu.gd" id="9_pause_menu_script"]
 [ext_resource type="Script" uid="uid://bqleum3oboq7t" path="res://scripts/ui/victory_panel.gd" id="10_victory_script"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_panel.tscn" id="11_dialogue_panel"]
 
 [sub_resource type="RectangleShape2D" id="RectShape2D_slot"]
 size = Vector2(64, 64)
@@ -549,3 +550,5 @@ script = ExtResource("10_victory_script")
 layer = 200
 visible = false
 script = ExtResource("8_gameover_script")
+
+[node name="DialoguePanel" parent="." instance=ExtResource("11_dialogue_panel")]
