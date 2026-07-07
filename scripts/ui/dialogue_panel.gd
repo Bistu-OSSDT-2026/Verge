@@ -26,8 +26,12 @@ func _ready() -> void:
 	panel.gui_input.connect(_on_panel_input)
 	SignalBus.show_dialogue.connect(_on_show_dialogue)
 	SignalBus.dialogue_finished.connect(_on_dialogue_finished)
+	print("[DialoguePanel] 初始化完成，信号已连接")
 
 func _on_show_dialogue(dialogue_list: Array) -> void:
+	print("[DialoguePanel] ✅ 收到对话信号! 对话数量: %d" % dialogue_list.size())
+	if dialogue_list.size() > 0:
+		print("[DialoguePanel] 第一条对话: ", dialogue_list[0])
 	dialogues = dialogue_list
 	current_index = 0
 	panel.visible = true

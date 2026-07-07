@@ -4,12 +4,12 @@
 
 extends Node
 
+const starting_gold: int = 150
 var gold: int = 0
-var mines: Array[Node] = []  # 金矿节点列表
+var mines: Array[Node] = []
 
 func _ready() -> void:
-	# 策划书 3.5: 初始资金 150 金（刚好够放 1 个金矿 + 1 个先锋）
-	gold = 150
+	gold = starting_gold
 	print("[Economy] 初始资金: ", gold)
 
 

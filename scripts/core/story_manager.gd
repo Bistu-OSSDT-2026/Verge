@@ -32,12 +32,13 @@ func _load_json(file_name: String, var_name: String) -> void:
 		return
 	var content := file.get_as_text()
 	file.close()
-	var data := JSON.parse_string(content)
-	if data.error == OK:
-		set(var_name, data.data)
+	var json := JSON.new()
+	var error := json.parse(content)
+	if error == OK:
+		set(var_name, json.data)
 		print("[StoryManager] ✅ 加载成功: ", file_name)
 	else:
-		print("[StoryManager] ❌ JSON解析失败: ", file_name, " - ", data.error_string)
+		print("[StoryManager] ❌ JSON解析失败: ", file_name, " - ", json.get_error_message())
 
 func set_current_chapter(chapter_id: String) -> void:
 	current_chapter = chapter_id
@@ -59,13 +60,20 @@ func get_chapter_opening_dialogue(chapter_id: String) -> Array:
 
 func _get_prologue_opening_dialogue() -> Array:
 	var prologue := chapters.get("prologue", {})
+	print("[StoryManager] 章节数据: chapters.has('prologue')=%s" % chapters.has("prologue"))
+	print("[StoryManager] prologue keys: ", prologue.keys())
 	var dialogue_list := []
 	if prologue.has("pre_level_dialogue"):
 		var pre_dialogue := prologue["pre_level_dialogue"]
+		print("[StoryManager] pre_level_dialogue keys: ", pre_dialogue.keys())
 		if pre_dialogue.has("dialogues"):
-			dialogue_list.append_array(pre_dialogue["dialogues"])
+			var dlg := pre_dialogue["dialogues"]
+			print("[StoryManager] 对话数量: %d" % dlg.size())
+			dialogue_list.append_array(dlg)
 		if pre_dialogue.has("rita_house") and pre_dialogue["rita_house"].has("dialogues"):
-			dialogue_list.append_array(pre_dialogue["rita_house"]["dialogues"])
+			var rita_dlg := pre_dialogue["rita_house"]["dialogues"]
+			print("[StoryManager] 丽塔对话数量: %d" % rita_dlg.size())
+			dialogue_list.append_array(rita_dlg)
 	return dialogue_list
 
 func get_chapter_ending_dialogue(chapter_id: String) -> Array:
@@ -116,10 +124,13 @@ func get_all_chapters() -> Array:
 func trigger_chapter_opening(chapter_id: String) -> void:
 	set_current_chapter(chapter_id)
 	var dialogue_list := get_chapter_opening_dialogue(chapter_id)
+	print("[StoryManager] 获取章节对话: chapter=%s, size=%d" % [chapter_id, dialogue_list.size()])
 	if dialogue_list.size() > 0:
 		is_dialogue_active = true
 		SignalBus.show_dialogue.emit(dialogue_list)
-		print("[StoryManager] 触发章节开场对话: ", chapter_id)
+		print("[StoryManager] ✅ 触发章节开场对话: ", chapter_id)
+	else:
+		print("[StoryManager] ❌ 对话列表为空: ", chapter_id)
 
 func trigger_chapter_ending(chapter_id: String) -> void:
 	var dialogue_list := get_chapter_ending_dialogue(chapter_id)

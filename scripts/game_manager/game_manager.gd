@@ -52,6 +52,7 @@ func _trigger_test_game_over() -> void:
 	SignalBus.game_over.emit()
 
 var level_chapter_map: Dictionary = {
+	"tutorial": "chapter_0",
 	"main_game": "chapter_0",
 	"level_1": "chapter_1",
 	"level_2": "chapter_2",
@@ -68,7 +69,6 @@ func start_level(level_name: String) -> void:
 	is_game_over = false
 	is_game_won = false
 	is_paused = false
-	# 重置统计
 	level_start_time = Time.get_ticks_msec() / 1000.0
 	total_gold_earned = 0
 	total_deployed = 0
@@ -105,8 +105,12 @@ func next_day() -> void:
 
 func _trigger_chapter_opening(level_name: String) -> void:
 	var chapter_id := level_chapter_map.get(level_name, "")
+	print("[GameManager] 查找章节映射: level=%s, chapter=%s" % [level_name, chapter_id])
 	if chapter_id == "":
+		print("[GameManager] ❌ 未找到章节映射: ", level_name)
 		return
 	if StoryManager and StoryManager.has_method("trigger_chapter_opening"):
+		print("[GameManager] ✅ 触发章节开场: ", chapter_id)
 		StoryManager.trigger_chapter_opening(chapter_id)
-		print("[GameManager] 触发章节开场剧情: ", chapter_id)
+	else:
+		print("[GameManager] ❌ StoryManager 不存在或无 trigger_chapter_opening 方法")
