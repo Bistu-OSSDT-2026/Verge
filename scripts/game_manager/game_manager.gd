@@ -80,7 +80,7 @@ func trigger_game_won(perfect: bool = false) -> void:
 	perfect_clear = perfect
 	is_paused = false
 	AudioManager.stop_bgm(0.0)
-	AudioManager.play_sfx("victory", 0.5)
+	AudioManager.play_sfx("victory", 0.3)
 	print("[GameManager] 关卡胜利! 完美通关: ", perfect)
 
 func next_day() -> void:

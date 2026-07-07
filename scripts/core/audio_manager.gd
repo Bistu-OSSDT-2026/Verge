@@ -92,6 +92,11 @@ func stop_bgm(fade: float = 0.5) -> void:
 	_current_bgm_name = ""
 	if _crossfade_tween and _crossfade_tween.is_valid():
 		_crossfade_tween.kill()
+	# fade=0 时立即停止（不用 tween，避免 time_scale=0 时冻结导致 BGM 不停）
+	if fade <= 0.0:
+		_bgm_a.stop()
+		_bgm_b.stop()
+		return
 	if _bgm_a.playing:
 		var tw := create_tween()
 		tw.tween_property(_bgm_a, "volume_db", -80.0, fade)
