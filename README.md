@@ -21,8 +21,8 @@
 | ⏰ **时间循环** | 白天(90s) → 黄昏(30s) → 夜晚(90s) → 黎明(清屏) → 下一天，3天为一局 |
 | 👥 **角色塔防** | 3种角色：先锋(快攻) / 重装(肉盾) / 狙击(远程高台)，各有所长 |
 | 🌅 **黎明清屏** | 黎明时刻全屏白闪，所有敌人消散，角色回血30%，极致爽感 |
-| 💰 **经济策略** | 金矿白天产出 + 夜晚停产，迫使主动作战赚取击杀赏金 |
-| 🎨 **像素动画** | AnimatedSprite2D 角色动画，暗色系 UI，诗意结算文案 |
+| 💰 **经济策略** | 金矿白天与黄昏产出、夜晚停产，结合击杀赏金形成节奏化经济 |
+| 🎨 **像素动画** | AnimatedSprite2D 角色/敌人动画，暗色系 UI，诗意结算文案 |
 
 ---
 
@@ -122,16 +122,19 @@
 
 ## 🏗️ 技术架构
 
-### Autoload 单例（6个）
+### Autoload 单例（当前实际已启用）
 
 | 单例 | 脚本路径 | 职责 |
 |------|---------|------|
 | `Constants` | `scripts/core/constants.gd` | 全局常量（时间/网格/角色/敌人类型） |
-| `SignalBus` | `scripts/core/signal_bus.gd` | 信号总线（7类24个信号，解耦模块） |
+| `SignalBus` | `scripts/core/signal_bus.gd` | 信号总线（7 大类信号，解耦模块） |
+| `AudioManager` | `scripts/core/audio_manager.gd` | BGM / SFX 管理 |
 | `GameManager` | `scripts/game_manager/game_manager.gd` | 游戏状态 + 关卡统计 + 天数管理 |
 | `TimeCycle` | `scripts/time_cycle/time_cycle.gd` | 时间循环系统（阶段切换/黎明触发） |
 | `Economy` | `scripts/economy/economy.gd` | 金币管理 + 金矿产出 + 击杀奖励 |
 | `Resolution` | `scripts/core/resolution_manager.gd` | 1280×720 分辨率适配 |
+| `PathManager` | `scripts/path/path_manager.gd` | 路径点收集与路径管理 |
+| `EffectsManager` | `scripts/effects/effects_manager.gd` | 视觉特效与数字飘字 |
 
 ### CanvasLayer UI 层级
 
@@ -194,8 +197,9 @@ Verge_Project/
 ### 关键技术注意
 - **暂停机制**：暂停菜单用 `get_tree().paused = true`，胜利/失败面板用 `Engine.time_scale = 0`
 - **Tween 陷阱**：`Engine.time_scale = 0` 时 Tween 完全不推进，UI 状态须立即设置最终值
-- **动画信号**：Godot 4 `AnimatedSprite2D.animation_finished` 信号不可靠，改用 `await Timer` 或直接 emit
+- **动画信号**：`AnimatedSprite2D.animation_finished` 不能稳定承担关键逻辑，角色/敌人攻击与死亡逻辑已改为解耦或定时兜底
 - **鼠标拦截**：`visible = false` 的 Control 仍可能拦截鼠标，需同步设 `mouse_filter = IGNORE`
+- **路径与阻挡**：敌人已支持被角色阻挡，阻挡队列会在死亡/撤回/黎明清屏时正确释放
 
 ### 测试快捷键（发布前删除）
 - `F3` — 直接触发胜利结算面板
